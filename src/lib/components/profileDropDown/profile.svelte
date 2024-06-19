@@ -24,7 +24,7 @@ links are not functional
 </script>
 
 <div class="container">
-  <button class="Profile" on:click={menuToggle} aria-label="Toggle Menu">
+  <button class="profile" on:click={menuToggle} aria-label="Toggle Menu">
     <img
       src="https://i.pinimg.com/736x/d1/4a/1a/d14a1aab16c42f083b303d5117b37d45.jpg"
       alt=""
@@ -62,7 +62,7 @@ links are not functional
     height: 100px;
     border-radius: 50%;
     cursor: pointer;
-    box-shadow: 0px 0px 10px -5px;
+    box-shadow: 0px 0px 0px 0px;
   }
 
   .menu {
@@ -101,16 +101,17 @@ links are not functional
   }
 
   button {
-    font-size: 16px;
     color: #558;
     background: none;
     border: none;
+    border-radius: 40px;
+    padding: 0;
     transition: 0.5s;
   }
 
   button:hover {
     background-color: #000000;
     border-radius: 90px;
-    padding: .5em;
+    padding: .25em;
   }
 </style>
