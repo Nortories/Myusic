@@ -1,2 +1,15 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script>
+  import SearchCard from "$lib/components/SearchCard/searchCard.svelte";
+</script>
+<div class="center">
+<SearchCard />
+</div>
+<style>
+/* Add your styles here */
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100vh;
+}
+</style>
