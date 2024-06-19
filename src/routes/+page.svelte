@@ -4,17 +4,12 @@
   import piano2 from "$lib/assets/img/pianopractice2.jpg";
   import piano1 from "$lib/assets/img/pianopractice2.webp";
 </script>
+
+
 <div class="search-card">
   <SearchCard />
 </div>
-<div class="container">
-  <div class="left-column" style="background-image: url({piano1});">
-    <!-- Content for the left column -->
-  </div>
-  <div class="right-column" style="background-image: url({piano2});">
-    <!-- Content for the right column -->
-  </div>
-</div>
+
 <div class="info-container">
   <!-- Content for the info container -->
    <div class="info-container2">
@@ -37,23 +32,9 @@
 </div>
 </div>
 <style>
-.container {
-  display: flex;
-  height: 100vh;
-}
 
-.left-column,
-.right-column {
-  flex: 1;
-  background-image: url(path/to/your/image.jpg);
-  background-size: cover;
-  background-position: center;
-}
 .search-card {
-  position: absolute;
-  top: 60%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+width: 100%;
 }
 .info-container {
   display: grid;

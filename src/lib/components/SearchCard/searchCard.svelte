@@ -20,7 +20,7 @@
     align-content: center;
     justify-content: center;
     place-items: center;
-    width: calc(80vw);
+    width: calc(100vw);
   }
 
   .title {
