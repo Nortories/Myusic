@@ -1,0 +1,143 @@
+{
+  ".svelte-kit/generated/server/internal.js": {
+    "file": "internal.js",
+    "name": "internal",
+    "src": ".svelte-kit/generated/server/internal.js",
+    "isEntry": true,
+    "imports": [
+      "_internal.js"
+    ]
+  },
+  "_index.js": {
+    "file": "chunks/index.js",
+    "name": "index",
+    "imports": [
+      "_ssr.js"
+    ]
+  },
+  "_internal.js": {
+    "file": "chunks/internal.js",
+    "name": "internal",
+    "imports": [
+      "_ssr.js"
+    ]
+  },
+  "_ssr.js": {
+    "file": "chunks/ssr.js",
+    "name": "ssr"
+  },
+  "node_modules/@sveltejs/kit/src/runtime/server/index.js": {
+    "file": "index.js",
+    "name": "index",
+    "src": "node_modules/@sveltejs/kit/src/runtime/server/index.js",
+    "isEntry": true,
+    "imports": [
+      "_internal.js",
+      "_index.js"
+    ]
+  },
+  "src/lib/assets/img/logo.png": {
+    "file": "_app/immutable/assets/logo.Djl3ms-5.png",
+    "src": "src/lib/assets/img/logo.png"
+  },
+  "src/lib/assets/img/musicbook.webp": {
+    "file": "_app/immutable/assets/musicbook.ClFA9DS8.webp",
+    "src": "src/lib/assets/img/musicbook.webp"
+  },
+  "src/lib/assets/img/pianopractice2.jpg": {
+    "file": "_app/immutable/assets/pianopractice2.CB3t1xTS.jpg",
+    "src": "src/lib/assets/img/pianopractice2.jpg"
+  },
+  "src/lib/assets/img/pianopractice2.webp": {
+    "file": "_app/immutable/assets/pianopractice2.D_MfpxTn.webp",
+    "src": "src/lib/assets/img/pianopractice2.webp"
+  },
+  "src/routes/+error.svelte": {
+    "file": "entries/pages/_error.svelte.js",
+    "name": "entries/pages/_error.svelte",
+    "src": "src/routes/+error.svelte",
+    "isEntry": true,
+    "imports": [
+      "_ssr.js"
+    ],
+    "css": [
+      "_app/immutable/assets/_error.CPZJ290C.css"
+    ]
+  },
+  "src/routes/+layout.svelte": {
+    "file": "entries/pages/_layout.svelte.js",
+    "name": "entries/pages/_layout.svelte",
+    "src": "src/routes/+layout.svelte",
+    "isEntry": true,
+    "imports": [
+      "_ssr.js"
+    ],
+    "css": [
+      "_app/immutable/assets/_layout.BTqF5psf.css"
+    ],
+    "assets": [
+      "_app/immutable/assets/logo.Djl3ms-5.png"
+    ]
+  },
+  "src/routes/+page.svelte": {
+    "file": "entries/pages/_page.svelte.js",
+    "name": "entries/pages/_page.svelte",
+    "src": "src/routes/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_ssr.js"
+    ],
+    "css": [
+      "_app/immutable/assets/_page.Cv8--MNX.css"
+    ],
+    "assets": [
+      "_app/immutable/assets/musicbook.ClFA9DS8.webp"
+    ]
+  },
+  "src/routes/Home/+page.svelte": {
+    "file": "entries/pages/Home/_page.svelte.js",
+    "name": "entries/pages/Home/_page.svelte",
+    "src": "src/routes/Home/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_ssr.js"
+    ]
+  },
+  "src/routes/contacts/+page.svelte": {
+    "file": "entries/pages/contacts/_page.svelte.js",
+    "name": "entries/pages/contacts/_page.svelte",
+    "src": "src/routes/contacts/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_ssr.js"
+    ]
+  },
+  "src/routes/login/+page.svelte": {
+    "file": "entries/pages/login/_page.svelte.js",
+    "name": "entries/pages/login/_page.svelte",
+    "src": "src/routes/login/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_ssr.js",
+      "_index.js"
+    ]
+  },
+  "src/routes/profile/+page.svelte": {
+    "file": "entries/pages/profile/_page.svelte.js",
+    "name": "entries/pages/profile/_page.svelte",
+    "src": "src/routes/profile/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_ssr.js"
+    ]
+  },
+  "src/routes/schedule/+page.svelte": {
+    "file": "entries/pages/schedule/_page.svelte.js",
+    "name": "entries/pages/schedule/_page.svelte",
+    "src": "src/routes/schedule/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_ssr.js"
+    ]
+  }
+}

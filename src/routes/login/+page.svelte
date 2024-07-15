@@ -1,8 +1,30 @@
 <script>
-    import { onDestroy, onMount } from 'svelte';
-    import {loggingIn} from "$lib/js/stores.js";
+  import Login from '$lib/components/Login.svelte';
+  import SignUp from '$lib/components/SignUp.svelte';
 
+  let showLogin = true; // State to toggle between login and signup
+
+  function toggleForm() {
+      showLogin = !showLogin; // Toggle the state
+  }
 </script>
 
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<div>
+  {#if showLogin}
+      <Login />
+      <button on:click={toggleForm}>Sign Up</button>
+  {:else}
+      <SignUp />
+      <button on:click={toggleForm}>Back to Log In</button>
+  {/if}
+</div>
+<style>
+  button {
+      margin-top: 20px;
+      padding: 8px 16px;
+      cursor: pointer;
+  }
+  div {
+      text-align: center;
+  }
+</style>

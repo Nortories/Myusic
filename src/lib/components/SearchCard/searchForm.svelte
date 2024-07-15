@@ -13,6 +13,7 @@
     console.log("Selected age group:", selectedAgeGroup);
     console.log("Zipcode:", zipcode);
     console.log("Location:", location);
+    window.location.href = "/login";
   }
 </script>
 
@@ -79,7 +80,7 @@
       <label for="online">Online</label>
     </div>
 
-    <button class="searchBtn" type="search">Search</button>
+    <button class="searchBtn" type="submit">Search</button>
   </div>
 </form>
 

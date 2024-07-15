@@ -1,6 +1,8 @@
 <script>
   import Profile from "$lib/components/profileDropDown/profile.svelte";
+  import Loginbutton from "$lib/components/profileDropDown/loginButton.svelte";
   import logo from "$lib/assets/img/logo.png";
+  import {logged_in} from "$lib/js/stores.js";
 </script>
 
 <header class="header">
@@ -10,17 +12,28 @@
 
   <nav class="nav">
     <ul class="nav-list">
-      <li><a href="/">Home</a></li>
-      <li><a href="/Profile">Profile</a></li>
-      <li><a href="/Schedule">Schedule</a></li>
+      <li><a href="/">Learn</a></li>
+      <li><a href="/Teach">Teach</a></li>
       <li><a href="/contacts">Contacts</a></li>
     </ul>
   </nav>
 
-  <div class="profile-icon">
+
+
+  {#if !logged_in}
+    <div class="profile-icon">
     <!-- Add your profile icon here -->
     <Profile />
   </div>
+  {:else}
+    <div class="profile-icon">
+      <Loginbutton />
+    </div>
+  {/if}
+  
+
+
+
 </header>
 
 <style>

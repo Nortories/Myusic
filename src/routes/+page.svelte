@@ -1,8 +1,8 @@
 <script>
   import SearchCard from "$lib/components/SearchCard/searchCard.svelte";
 
-  import piano2 from "$lib/assets/img/pianopractice2.jpg";
-  import piano1 from "$lib/assets/img/pianopractice2.webp";
+  // import piano2 from "$lib/assets/img/pianopractice2.jpg";
+  // import piano1 from "$lib/assets/img/pianopractice2.webp";
 </script>
 
 
