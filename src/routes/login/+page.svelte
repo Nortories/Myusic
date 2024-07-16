@@ -1,6 +1,6 @@
 <script>
-  import Login from '$lib/components/Login.svelte';
-  import SignUp from '$lib/components/SignUp.svelte';
+  import Login from '$lib/components/Login/Login.svelte';
+  import SignUp from '$lib/components/Login/SignUp.svelte';
 
   let showLogin = true; // State to toggle between login and signup
 
