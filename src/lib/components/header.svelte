@@ -2,7 +2,9 @@
   import Profile from "$lib/components/profileDropDown/profile.svelte";
   import Loginbutton from "$lib/components/profileDropDown/loginButton.svelte";
   import logo from "$lib/assets/img/logo.png";
-  import {logged_in} from "$lib/js/stores.js";
+  import checkLogin from "$lib/js/stores.js";
+
+  let logged_in = false;
 </script>
 
 <header class="header">

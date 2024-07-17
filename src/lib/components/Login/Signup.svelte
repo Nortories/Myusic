@@ -1,90 +1,56 @@
 <script>
-    import axios from 'axios';
-    let username = '';
-    let password = '';
-    let loginMessage = '';
-    let registerUsername = '';
-    let registerPassword = '';
-    let registerMessage = '';
+  import axios from "axios";
 
-    const handleLogin = async () => {
-        try {
-            const response = await axios.post('http://localhost:3000/login', {
-                username,
-                password
-            });
-            loginMessage = response.data;
-        } catch (error) {
-            loginMessage = error.response.data;
-        }
-    };
+  let registerUsername = "";
+  let registerPassword = "";
+  let registerMessage = "";
+  let confirmPassword = "";
 
-    const handleRegister = async () => {
-        try {
-            const response = await axios.post('http://localhost:3000/register', {
-                username: registerUsername,
-                password: registerPassword
-            });
-            registerMessage = response.data;
-        } catch (error) {
-            registerMessage = error.response.data;
-        }
-    };
+  const handleRegister = async () => {
+    if (registerPassword !== confirmPassword) {
+      registerMessage = "Passwords do not match";
+      return;
+    }
+    try {
+      const response = await axios.post("http://localhost:3000/register", {
+        username: registerUsername,
+        password: registerPassword,
+        email: "",
+        address: "",
+        phoneNumber: "",
+        bio: "",
+      });
+      registerMessage = response.data;
+    } catch (error) {
+      registerMessage = error.response.data;
+    }
+  };
 </script>
 
 <main>
-    <h1>Login</h1>
-    <form on:submit|preventDefault={handleLogin}>
-        <label>
-            Username:
-            <input type="text" bind:value={username} />
-        </label>
-        <br>
-        <label>
-            Password:
-            <input type="password" bind:value={password} />
-        </label>
-        <br>
-        <button type="submit">Login</button>
-    </form>
-    {#if loginMessage}
-        <p>{loginMessage}</p>
-    {/if}
-
-    <h1>Register</h1>
-    <form on:submit|preventDefault={handleRegister}>
-        <label>
-            Username:
-            <input type="text" bind:value={registerUsername} />
-        </label>
-        <br>
-        <label>
-            Password:
-            <input type="password" bind:value={registerPassword} />
-        </label>
-        <br>
-        <button type="submit">Register</button>
-    </form>
-    {#if registerMessage}
-        <p>{registerMessage}</p>
-    {/if}
+  <h1>Register</h1>
+  <form on:submit|preventDefault={handleRegister}>
+    <label>
+      Username:
+      <input type="text" bind:value={registerUsername} />
+    </label>
+    <br />
+    <label>
+      Password:
+      <input type="password" bind:value={registerPassword} />
+    </label>
+    <br />
+    <label>
+      Confirm :
+      <input type="password" bind:value={confirmPassword} />
+    </label>
+    <br />
+    <button type="submit">Register</button>
+  </form>
+  {#if registerMessage}
+    <p>{registerMessage}</p>
+  {/if}
 </main>
-
-<style>
-    main {
-        text-align: center;
-        margin-top: 50px;
-    }
-    label {
-        display: block;
-        margin: 10px 0;
-    }
-    button {
-        margin-top: 20px;
-    }
-</style>
-
-
 
 <!-- <script>
   let name = "";
@@ -222,3 +188,17 @@
         background-color: #0056b3;
     }
 </style> -->
+
+<style>
+  main {
+    text-align: center;
+    margin-top: 50px;
+  }
+  label {
+    display: block;
+    margin: 10px 0;
+  }
+  button {
+    margin-top: 20px;
+  }
+</style>

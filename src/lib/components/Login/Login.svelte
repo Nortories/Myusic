@@ -1,41 +1,53 @@
 <script>
   import axios from "axios";
+  import {logged_in, user} from "$lib/js/stores.js";
 
-  let username = "";
-  let password = "";
-  let message = "";
+  let username = '';
+    let password = '';
+    let loginMessage = '';
 
-  const handleSubmit = async () => {
-    try {
-      const response = await axios.post("http://localhost:3000/login", {
-        username,
-        password,
-      });
-      message = response.data;
-    } catch (error) {
-      message = error.response.data;
-    }
-  };
+    const handleLogin = async () => {
+        try {
+            const response = await axios.post('http://localhost:3000/login', {
+                username,
+                password
+            });
+            loginMessage = response.data;
+            if (response.status === 200) {
+                updateStore();
+
+            }
+            
+        } catch (error) {
+            loginMessage = "Invalid username or ";
+        }
+    };
+
+    const updateStore = () => {
+        user.set(username);
+        logged_in.set(true);
+        console.log("done");
+    };
 </script>
 
 <main>
-  <h1>Login</h1>
-  <form on:submit|preventDefault={handleSubmit}>
-    <label>
-      Username:
-      <input type="text" bind:value={username} />
-    </label>
-    <br />
-    <label>
-      Password:
-      <input type="password" bind:value={password} />
-    </label>
-    <br />
-    <button type="submit">Login</button>
-  </form>
-  {#if message}
-    <p>{message}</p>
-  {/if}
+    <h1>Login</h1>
+    <form on:submit|preventDefault={handleLogin}>
+        <label>
+            Username:
+            <input type="text" bind:value={username} />
+        </label>
+        <br>
+        <label>
+            Password:
+            <input type="password" bind:value={password} />
+        </label>
+        <br>
+        <button type="submit">Login</button>
+    </form>
+    {#if loginMessage}
+        <p>{loginMessage}</p>
+    {/if}
 </main>
 
 <style>
