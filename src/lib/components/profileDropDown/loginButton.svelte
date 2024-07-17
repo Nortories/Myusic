@@ -36,22 +36,21 @@ links are not functional
     color: white;
     font-size: 1.5em;
     background: #558;
-    border: black 1px solid;
-    border-radius: 50%; /* changed from 40px to 50% */
-    padding: 1em;
+    border: none; /* removed border */
+    border-radius: 10px; /* changed border-radius to 10px */
+    padding: .5em 2em; /* adjusted padding */
     transition: 0.5s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* added box-shadow */
   }
 
   button:hover {
     background-color: #000000;
-    border-radius: 50%; /* changed from 90px to 50% */
-    padding: 1.25em;
+    padding: 1em 2.5em; /* adjusted padding */
     cursor: pointer;
   }
   button:active {
     background-color: #868686;
-    border-radius: 50%; /* changed from 90px to 50% */
-    padding: 1.25em;
+    padding: 1em 2.5em; /* adjusted padding */
   }
 
 </style>

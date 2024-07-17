@@ -20,7 +20,7 @@
 
 
 
-  {#if !logged_in}
+  {#if logged_in}
     <div class="profile-icon">
     <!-- Add your profile icon here -->
     <Profile />

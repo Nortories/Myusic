@@ -1,7 +1,16 @@
 <script>
   import Login from '$lib/components/Login/Login.svelte';
   import SignUp from '$lib/components/Login/SignUp.svelte';
+  import { onMount } from "svelte";
 
+  import { logged_in } from "$lib/js/stores.js";
+
+  onMount(() => {
+    if (logged_in) {
+      // Redirect logic here
+      console.log(logged_in);
+      // window.location.href = "/main";
+  }});
   let showLogin = true; // State to toggle between login and signup
 
   function toggleForm() {
