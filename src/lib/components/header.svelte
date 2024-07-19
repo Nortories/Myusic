@@ -11,7 +11,7 @@
   });
 
   function checkLogin() {
-    if (localStorage.getItem("logged_in")==="true") {
+    if (localStorage.getItem("loginstate")==="true") {
       logged_in = true;
     }
   }

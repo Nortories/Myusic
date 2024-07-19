@@ -3,28 +3,28 @@
   import axios from "axios";
   import { Calendar } from "@fullcalendar/core";
   import dayGridPlugin from "@fullcalendar/daygrid";
-  import interactionPlugin from "@fullcalendar/interaction"
+  import interactionPlugin from "@fullcalendar/interaction";
 
   let name = "";
-  let username = ""
+  let username = "";
   let email = "";
   let address = "";
   let zipcode = "";
   let phoneNumber = "";
   let bio = "";
   let loginMessage = "";
+  let endpoint = "http://localhost:3000/profile";
 
-  
   onMount(async () => {
     // Retrieve username from local storage
     checkLogin();
-    
+
     name = username;
     console.log(username);
 
     if (username) {
       try {
-        const response = await axios.get("http://localhost:3000/profile", {
+        const response = await axios.get(endpoint, {
           headers: {
             username: username,
           },
@@ -42,11 +42,11 @@
           plugins: [interactionPlugin, dayGridPlugin],
           initialView: "dayGridMonth",
           selectable: true,
-          dateClick: function(info) {
-    alert('Clicked on: ' + info.dateStr);
-    // change the day's background color just for fun
-    info.dayEl.style.backgroundColor = 'red';
-  },
+          dateClick: function (info) {
+            alert("Clicked on: " + info.dateStr);
+            // change the day's background color just for fun
+            info.dayEl.style.backgroundColor = "red";
+          },
           events: [
             // Add your events here
             // Example:
@@ -62,15 +62,15 @@
   });
 
   function checkLogin() {
-    if (localStorage.getItem("loginstate")==="true") 
-    {
-      username = localStorage.getItem("username");
+    if (localStorage.getItem("isTeacher") === "true") {
+      endpoint = "http://localhost:3000/teachProfile";
     }
-    else
-    {
+    if (localStorage.getItem("loginstate") === "true") {
+      username = localStorage.getItem("username");
+    } else {
       window.location.href = "/";
     }
-  };
+  }
 </script>
 
 <!------------------------------------------->

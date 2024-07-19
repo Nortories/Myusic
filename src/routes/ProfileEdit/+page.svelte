@@ -41,6 +41,13 @@
   let phoneNumber = "";
   let bio = "";
   let logged_in = false;
+  let endpoint = "http://localhost:3000/profile";
+  let pricePerLesson = 0;
+  let availableOnline = false;
+  let availableInHome = false;
+  let availableToTravel = false;
+  let instrumentsTaught = "";
+
 
   onMount(() => {
     // const logged_in = localStorage.getItem('logged_in');
@@ -52,6 +59,9 @@
   });
 
   function checkLogin() {
+    if (localStorage.getItem("isTeacher") === "true") {
+      endpoint = "http://localhost:3000/teachProfile";
+    }
     if (localStorage.getItem("loginstate") === "true") {
       registerUsername = localStorage.getItem("username");
     } else {
@@ -59,35 +69,91 @@
     }
   }
 
-  const handleLoadProfile = async () => {
-    try {
-      const response = await axios.get("http://localhost:3000/profile", {
-        headers: {
-          username: registerUsername,
-        },
-      });
-      const { data } = response;
-      email = data.email;
-      address = data.address;
-      zipcode = data.zipcode;
-      phoneNumber = data.phoneNumber;
-      bio = data.bio;
-    } catch (error) {
+  const handleLoadProfile = async () => 
+  {
+    try 
+    {
+        if (!localStorage.getItem("isTeacher")) 
+      {
+        const response = await axios.get(endpoint, 
+        {
+          headers: 
+          {
+            username: registerUsername,
+          },
+        });
+        const { data } = response;
+        email = data.email;
+        address = data.address;
+        zipcode = data.zipcode;
+        phoneNumber = data.phoneNumber;
+        bio = data.bio;
+      }
+      else
+      {
+        const response = await axios.get(endpoint, {
+          headers: {
+            username: registerUsername,
+          },
+        });
+        const { data } = response;
+        email = data.email;
+        address = data.address;
+        zipcode = data.zipcode;
+        phoneNumber = data.phoneNumber;
+        bio = data.bio;
+        pricePerLesson = data.pricePerLesson;
+        availableOnline = data.availableOnline;
+        availableInHome = data.availableInHome;
+        availableToTravel = data.availableToTravel;
+        instrumentsTaught = data.instrumentsTaught;
+      } 
+    }
+    catch (error) 
+    {
       console.error(error);
     }
   };
 
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.put("http://localhost:3000/profile", {
-        registerUsername,
-        email,
-        address,
-        zipcode,
-        phoneNumber,
-        bio,
-      });
+      if (!localStorage.getItem("isTeacher")) 
+      {
+        const response = await axios.put(endpoint, {
+          registerUsername,
+          email,
+          address,
+          zipcode,
+          phoneNumber,
+          bio,
+        });
+        const { data } = response;
+        console.log(data);
+        alert("Profile updated successfully!");
+        window.location.href = "/";
+      } 
+      else 
+      {
+        const response = await axios.put(endpoint, {
+          registerUsername,
+          email,
+          address,
+          zipcode,
+          phoneNumber,
+          bio,
+          pricePerLesson,
+          availableOnline,
+          availableInHome,
+          availableToTravel,
+          instrumentsTaught,
+        });
+        const { data } = response;
+        console.log(data);
+        alert("Profile updated successfully!");
+        window.location.href = "/";
+      }
       const { data } = response;
       console.log(data);
       alert("Profile updated successfully!");
@@ -127,6 +193,35 @@
       <textarea bind:value={bio}></textarea>
     </label>
     <button type="submit">Save</button>
+    {#if localStorage.getItem("isTeacher") === "true"}
+      <h2>Teacher Settings</h2>
+      <label>
+        Price per 30min Lesson:
+        <input type="number" bind:value={pricePerLesson} />
+      </label>
+      <label>
+        Available to Teach Online:
+        <input type="checkbox" bind:checked={availableOnline} />
+      </label>
+      <label>
+        Available to Teach In-home:
+        <input type="checkbox" bind:checked={availableInHome} />
+      </label>
+      <label>
+        Available to Travel:
+        <input type="checkbox" bind:checked={availableToTravel} />
+      </label>
+      <label>
+        Instruments Taught:
+        <select bind:value={instrumentsTaught} multiple>
+          <option value="piano">Piano</option>
+          <option value="guitar">Guitar</option>
+          <option value="violin">Violin</option>
+          <option value="drums">Drums</option>
+          <option value="saxophone">Saxophone</option>
+        </select>
+      </label>
+    {/if}
   </form>
 </main>
 

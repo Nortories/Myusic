@@ -1,11 +1,15 @@
 <script>
   import axios from "axios";
-  import {logged_in, user} from "$lib/js/stores.js";
+  // import {logged_in, user} from "$lib/js/stores.js";
+  import {onMount} from "svelte";
 
   let username = '';
     let password = '';
     let loginMessage = '';
 
+    onMount(async() => {
+        
+    });
     const handleLogin = async () => {
         try {
             const response = await axios.post('http://localhost:3000/login', {
@@ -14,7 +18,12 @@
             });
             loginMessage = response.data;
             if (response.status === 200) {
-                updateStore();
+              checkLogin();
+
+            }
+            if (response.status === 220) {
+              localStorage.setItem('isTeacher', true);
+              checkLogin();
 
             }
             
@@ -23,23 +32,26 @@
         }
     };
 
-    const updateStore = () => {
-        user.set(username);
-        logged_in.set(true);
-        console.log("done");
-        console.log(username);
-        if (!localStorage.getItem('username')) {
-            localStorage.setItem('username', username);
-            localStorage.setItem('loginstate', true);
-            checkLogin();
-        }
-    };
+    // const updateStore = () => {
+    //     user.set(username);
+    //     logged_in.set(true);
+    //     console.log("done");
+    //     console.log(username);
+    //     if (!localStorage.getItem('username')) {
+    //         localStorage.setItem('username', username);
+    //         localStorage.setItem('loginstate', true);
+    //         checkLogin();
+    //     }
+    // };
 
     const checkLogin = () => {
-        if (localStorage.getItem('username')) {
+      if (!localStorage.getItem('username')) {
+            localStorage.setItem('username', username);
+            localStorage.setItem('loginstate', true);
             window.location.href = "/";
-        }
+    }
     };
+
 </script>
 
 <main>
