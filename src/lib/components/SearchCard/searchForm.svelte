@@ -12,8 +12,9 @@
     console.log("Selected instrument:", selectedInstrument);
     console.log("Selected age group:", selectedAgeGroup);
     console.log("Zipcode:", zipcode);
+    localStorage.setItem("zipcode", zipcode);
     console.log("Location:", location);
-    window.location.href = "/login";
+    window.location.href = "/SearchResults";
   }
 </script>
 

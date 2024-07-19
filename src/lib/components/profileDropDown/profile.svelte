@@ -56,6 +56,7 @@ links are not functional
     align-items: center;
     margin-top: 20px;
     margin-right: 20px;
+
   }
   img {
     width: 100px;
@@ -67,7 +68,7 @@ links are not functional
 
   .menu {
     position: absolute;
-    margin: 10px;
+    z-index: 9999;
     padding-left: 10px;
     border-radius: 6px;
     padding: 20px;

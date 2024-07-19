@@ -2,10 +2,25 @@
   import Profile from "$lib/components/profileDropDown/profile.svelte";
   import Loginbutton from "$lib/components/profileDropDown/loginButton.svelte";
   import logo from "$lib/assets/img/logo.png";
-  import checkLogin from "$lib/js/stores.js";
+  import { onMount } from "svelte";
 
   let logged_in = false;
+
+  onMount(() => {
+    checkLogin();
+  });
+
+  function checkLogin() {
+    if (localStorage.getItem("logged_in")==="true") {
+      logged_in = true;
+    }
+  }
+
+
 </script>
+
+
+<!------------------------------------------->
 
 <header class="header">
   <img src={logo} alt="Logo" class="logo" style="width:120px;" />
@@ -33,10 +48,10 @@
     </div>
   {/if}
   
-
-
-
 </header>
+
+
+<!------------------------------------------->
 
 <style>
   /* Add your styles here */

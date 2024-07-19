@@ -10,8 +10,15 @@
       // Redirect logic here
       console.log(logged_in);
       // window.location.href = "/main";
+      checklogin();
   }});
   let showLogin = true; // State to toggle between login and signup
+
+  function checklogin() {
+    if (localStorage.getItem('username')) {
+      window.location.href = "/";
+    }
+  }
 
   function toggleForm() {
       showLogin = !showLogin; // Toggle the state

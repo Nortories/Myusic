@@ -27,6 +27,18 @@
         user.set(username);
         logged_in.set(true);
         console.log("done");
+        console.log(username);
+        if (!localStorage.getItem('username')) {
+            localStorage.setItem('username', username);
+            localStorage.setItem('loginstate', true);
+            checkLogin();
+        }
+    };
+
+    const checkLogin = () => {
+        if (localStorage.getItem('username')) {
+            window.location.href = "/";
+        }
     };
 </script>
 

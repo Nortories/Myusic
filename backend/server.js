@@ -3,6 +3,8 @@ const bodyParser = require("body-parser");
 const bcrypt = require("bcryptjs");
 const cors = require("cors");
 const fs = require("fs");
+const { log } = require("console");
+const e = require("express");
 
 const app = express();
 const port = 3000;
@@ -14,13 +16,52 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Set up the JSON file
 const dbPath = "./users.json";
 
+const teachdbPath = "./teach.json";
+
 // Create the JSON file if it doesn't exist
 if (!fs.existsSync(dbPath)) {
   fs.writeFileSync(dbPath, "[]");
 }
 
+if (!fs.existsSync(teachdbPath)) {
+  fs.writeFileSync(teachdbPath, "[]");
+}
+
 // Read the JSON file
 const users = JSON.parse(fs.readFileSync(dbPath));
+
+const teachers = JSON.parse(fs.readFileSync(teachdbPath));
+
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
+
+
+app.get("/userlogin", (req, res) => {
+  const { username } = req.headers; // Extract the username from the request headers
+  console.log("profile user " + username);
+  const user = users.find((user) => user.username === username);
+
+  if (!user) {
+    return res.status(400).send("User not found");
+  }
+
+  const { lastlogin, loggedIn } = user;
+
+  if (Date.now() >= lastlogin + 60000) {
+    user.loggedIn = false;
+    console.log("User logged out due to inactivity");
+  }
+  else {lastlogin = Date.now();}
+  const profileData = {
+    username,
+    lastlogin,
+    loggedIn,
+  };
+
+  res.status(200).json(profileData);
+});
+
 
 // Endpoint for user login
 app.post("/login", (req, res) => {
@@ -37,9 +78,13 @@ app.post("/login", (req, res) => {
         isValidPassword = true;
       console.log("Password Matched");
 
+      user.loggedIn = true;
+      user.lastlogin = Date.now();
+      return res.status(200).send("Login successful");
     }
     if (isValidPassword) {
         console.log("valid password");
+      
         return res.status(200).send("Login successful");
   } else {
     console.log("Password not Matched");
@@ -49,7 +94,8 @@ app.post("/login", (req, res) => {
 
 // Endpoint for user registration
 app.post("/register", (req, res) => {
-  const { username, password, email, address, phoneNumber, bio } = req.body;
+  const schedule = [];
+  const { username, password, email, address,zipcode, phoneNumber, bio } = req.body;
   if (!username || !password) {
     return res.status(400).send("Invalid username or password");
   }
@@ -72,8 +118,12 @@ app.post("/register", (req, res) => {
     password,
     email,
     address,
+    zipcode,
     phoneNumber,
     bio,
+    lastlogin: Date.now(),
+    loggedIn: false,
+    schedule,
   };
 
   users.push(newUser);
@@ -84,9 +134,11 @@ app.post("/register", (req, res) => {
   res.status(200).send("User registered successfully");
 });
 
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
+
+
+
+
+
 
 // Endpoint for user profile
 app.get("/profile", (req, res) => {
@@ -98,12 +150,13 @@ app.get("/profile", (req, res) => {
     return res.status(400).send("User not found");
   }
 
-  const { email, address, phoneNumber, bio } = user;
+  const { email, address, zipcode, phoneNumber, bio } = user;
 
   const profileData = {
     username,
     email,
     address,
+    zipcode,
     phoneNumber,
     bio,
   };
@@ -111,20 +164,53 @@ app.get("/profile", (req, res) => {
   res.status(200).json(profileData);
 });
 
+app.get("/teachProfile", (req, res) => {
+  const { username } = req.headers; // Extract the username from the request headers
+  console.log("profile user " + username);
+  const user = teachers.find((user) => user.username === username);
+
+  if (!user) {
+    return res.status(400).send("User not found");
+  }
+
+  const { email, address, zipcode, phoneNumber, bio } = user;
+
+  const profileData = {
+    username,
+    email,
+    address,
+    zipcode,
+    phoneNumber,
+    bio,
+  };
+
+  res.status(200).json(profileData);
+});
+
+
+
+
+
 // Endpoint for updating user profile
 app.put("/profile", (req, res) => {
-    const { username } = req.headers; // Extract the username from the request headers
-    const { email, address, phoneNumber, bio } = req.body;
+    // const { username } = req.headers; // Extract the username from the request headers
+    const {registerUsername, email, address, zipcode, phoneNumber, bio } = req.body;
 
-    const user = users.find((user) => user.username === username);
+    const user = users.find((user) => user.username === registerUsername);
 
+
+
+    console.log(users)
     if (!user) {
+        console.log(registerUsername);
+        console.log("User not found when updating profile");
         return res.status(400).send("User not found");
     }
 
     // Update the user's profile information
     user.email = email || user.email;
     user.address = address || user.address;
+    user.zipcode = zipcode || user.zipcode;
     user.phoneNumber = phoneNumber || user.phoneNumber;
     user.bio = bio || user.bio;
 
@@ -132,4 +218,79 @@ app.put("/profile", (req, res) => {
     fs.writeFileSync(dbPath, JSON.stringify(users));
 
     res.status(200).send("Profile updated successfully");
+});
+
+
+
+
+
+
+
+
+// Endpoint for checking user session status
+app.get("/checkloginstatus", (req, res) => {
+  const { username } = req.headers; // Extract the username from the request headers
+  console.log("Checking login status for user: " + username);
+  const user = users.find((user) => user.username === username);
+
+  if (!user) {
+    return res.status(400).send("User not found");
+  }
+
+  const { loggedIn } = user;
+
+  const sessionStatus = {
+    loggedIn,
+  };
+
+  res.status(200).json(sessionStatus);
+
+});
+
+
+app.get("/getProfileByZipcode", (req, res) => {
+  const { zipcode } = req.headers; // Extract the zipcode from the request headers
+  console.log("profile user " + zipcode);
+  const usersWithPostalCode = users.filter((user) => user.zipcode === zipcode);
+
+  if (usersWithPostalCode.length === 0) {
+    return res.status(400).send("No users found with the given zipcode");
+  }
+
+  const profileData = usersWithPostalCode.map((user) => {
+    const { username, email, address, phoneNumber, bio } = user;
+    return {
+      username,
+      email,
+      address,
+      phoneNumber,
+      bio,
+    };
+  });
+
+  res.status(200).json(profileData);
+});
+
+
+app.get("/getTeacherByZipcode", (req, res) => {
+  const { zipcode } = req.headers; // Extract the zipcode from the request headers
+  console.log("Teacher profile users at zip " + zipcode);
+  const usersWithPostalCode = teachers.filter((user) => user.zipcode === zipcode);
+
+  if (usersWithPostalCode.length === 0) {
+    return res.status(400).send("No users found with the given zipcode");
+  }
+
+  const profileData = usersWithPostalCode.map((user) => {
+    const { username, email, address, phoneNumber, bio } = user;
+    return {
+      username,
+      email,
+      address,
+      phoneNumber,
+      bio,
+    };
+  });
+
+  res.status(200).json(profileData);
 });

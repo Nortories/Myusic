@@ -1,11 +1,11 @@
 <ul>
-    <li><a href="/Profile">My Profile</a></li>
+    <li><a href="/ProfileSelf">My Profile</a></li>
     <li><a href="/ProfileEdit">Edit Profile</a></li>
     <li><a href="/Schedule">Schedule</a></li>
     <li><a href="/contacts">Contacts</a></li>
     <li><a href="/Inbox">Inbox</a></li>
     <li><a href="/Settings">Settings</a></li>
-    <li><a href="/Logot">Logout</a></li>
+    <li><a href="/Logout">Logout</a></li>
   </ul>
 
   <style>
