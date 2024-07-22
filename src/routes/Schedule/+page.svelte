@@ -18,14 +18,9 @@
       initialView: "timeGridWeek",
       selectable: true,
       select: handleTimeSlotSelect,
-      events: [
-    {
-      start: '2024-07-22T09:30:00.000',
-      end: '2024-07-22T15:00:00.000',
-      display: 'background'
-    }
-  ]
+      events: [{}],
     });
+    updatecalendar();
     calendar.render();
   });
 
@@ -57,6 +52,7 @@
       backgroundColor: "green",
       display: "background",
     };
+    console.log("Event:",info.start.toISOString().split("T")[0]);
     // events = [event]; // Create an array of events
     // const json = JSON.stringify(events); // Convert events to JSON string
     // const blob = new Blob([json], { type: 'application/json' }); // Create a Blob object
@@ -68,24 +64,24 @@
 
     // Send the event to the /schedule endpoint using axios
     axios
-    .put("http://localhost:3000/schedule", {
+      .put("http://localhost:3000/schedule", {
         registerUsername: username,
         schedule: event,
-    })
-    .then((response) => {
+      })
+      .then((response) => {
         console.log("Event sent successfully:", response.data);
-    })
-    .catch((error) => {
+      })
+      .catch((error) => {
         console.error("Error sending event:", error);
-    });
+      });
     updatecalendar();
   }
-  
-  async function updatecalendar () {
-      console.log("up username:", username);
-      await axios
+
+  async function updatecalendar() {
+    console.log("up username:", username);
+    await axios
       .get("http://localhost:3000/getSchedule", {
-       headers: {
+        headers: {
           registerUsername: username,
         },
       })
@@ -97,13 +93,23 @@
         console.error("Error receiving events:", error);
       });
 
-        calendar.removeAllEvents();
-        let i = 0;
-        for (i in events) {
-          calendar.addEvent([{title: 'Event 1', start: "2024-07-22T12:30:00.000Z",
-        end: "2024-07-22T13:00:00.000Z",backgroundColor: "blue",}]);
-        }
-        calendar.render();
+    calendar.removeAllEvents();
+    let i = 0;
+    for (i in events) {
+      calendar.addEvent({
+        // start: "2024-07-22T09:30:00.000",
+        // end: "2024-07-22T15:00:00.000",
+        // backgroundColor: "blue",
+        // display: "background",
+        id: events[i].id,
+        start: events[i].start,
+        end: events[i].end,
+        backgroundColor: events[i].backgroundColor,
+        display: events[i].display,
+      });
+    }
+
+    calendar.render();
   }
 </script>
 

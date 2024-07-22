@@ -26,7 +26,7 @@ links are not functional
 <div class="container">
   <button class="Profile" on:click={menuToggle} aria-label="Toggle Menu">
     <img
-      src="https://i.pinimg.com/736x/d1/4a/1a/d14a1aab16c42f083b303d5117b37d45.jpg"
+      src="https://i.pravatar.cc/50/50"
       alt=""
     />
   </button>

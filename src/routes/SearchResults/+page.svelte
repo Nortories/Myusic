@@ -31,7 +31,7 @@
         console.log("Clicked profile:", profile);
         // Add your custom logic here
         localStorage.setItem("searchName", profile.username);
-        window.location.href = "/profile";
+        window.location.href = "/Profile";
     }
 
 </script>

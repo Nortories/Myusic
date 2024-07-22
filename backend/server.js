@@ -343,9 +343,10 @@ app.put("/schedule", (req, res) => {
   if (!user) {
     return res.status(400).send("User not found");
   }
+  console.log("user schedule " + user.schedule);
   user.schedule.push(schedule); // Add the new schedule to the existing schedule array
   fs.writeFileSync(teachdbPath, JSON.stringify(teachers));
-  console.log("Scheduled update endpoint");
+  // console.log("Scheduled update endpoint");
 
   res.status(200).send("Schedule updated successfully");
 });
@@ -353,7 +354,7 @@ app.put("/schedule", (req, res) => {
 app.get("/getSchedule", (req, res) => {
   const { registerusername } = req.headers; // Extract the username from the request headers
   console.log("profile user " + registerusername);
-  console.log(req.headers)
+  // console.log(req.headers)
   const user = teachers.find((user) => user.username === registerusername);
 
   if (!user) {

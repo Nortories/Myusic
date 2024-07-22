@@ -77,7 +77,7 @@
 <div class="container">
   <div class="picture-column">
     <img
-      src="https://picsum.photos/200/300"
+      src="https://i.pravatar.cc/200/300"
       alt="Placeholder Image"
       aria-hidden="true"
     />
