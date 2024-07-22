@@ -77,7 +77,7 @@ app.post("/login", (req, res) => {
 
       teacher.loggedIn = true;
       teacher.lastlogin = Date.now();
-      
+
       return res.status(220).send("Teacher login successful");
     } else {
       console.log("Password not Matched");
@@ -184,10 +184,10 @@ app.get("/profile", (req, res) => {
 app.put("/profile", (req, res) => {
   // const { username } = req.headers; // Extract the username from the request headers
   const { registerUsername, email, address, zipcode, phoneNumber, bio } =
-  req.body;
-  
+    req.body;
+
   const user = users.find((user) => user.username === registerUsername);
-  
+
   console.log(users);
   if (!user) {
     console.log(registerUsername);
@@ -201,10 +201,10 @@ app.put("/profile", (req, res) => {
   user.zipcode = zipcode || user.zipcode;
   user.phoneNumber = phoneNumber || user.phoneNumber;
   user.bio = bio || user.bio;
-  
+
   // Update the JSON file
   fs.writeFileSync(dbPath, JSON.stringify(users));
-  
+
   res.status(200).send("Profile updated successfully");
 });
 
@@ -238,9 +238,9 @@ app.get("/teachProfile", (req, res) => {
 
 app.put("/teachProfile", (req, res) => {
   // const { username } = req.headers; // Extract the username from the request headers
-  const { registerUsername, email, address, zipcode, phoneNumber, bio, pricePerLesson, availableOnline, availableInHome, availableToTravel, instrumentsTaught} =
-  req.body;
-  
+  const { registerUsername, email, address, zipcode, phoneNumber, bio, pricePerLesson, availableOnline, availableInHome, availableToTravel, instrumentsTaught } =
+    req.body;
+
   const user = teachers.find((user) => user.username === registerUsername);
   console.log(teachers);
 
@@ -250,7 +250,7 @@ app.put("/teachProfile", (req, res) => {
     return res.status(400).send("User not found");
   }
 
-  console.log("availableOnline "+availableOnline);
+  console.log("availableOnline " + availableOnline);
 
   // Update the user's profile information
   user.email = email || user.email;
@@ -334,4 +334,34 @@ app.get("/getTeacherByZipcode", (req, res) => {
   });
 
   res.status(200).json(profileData);
+});
+
+
+app.put("/schedule", (req, res) => {
+  const { registerUsername, schedule } = req.body;
+  const user = teachers.find((user) => user.username === registerUsername);
+  if (!user) {
+    return res.status(400).send("User not found");
+  }
+  user.schedule.push(schedule); // Add the new schedule to the existing schedule array
+  fs.writeFileSync(teachdbPath, JSON.stringify(teachers));
+  console.log("Scheduled update endpoint");
+
+  res.status(200).send("Schedule updated successfully");
+});
+
+app.get("/getSchedule", (req, res) => {
+  const { registerusername } = req.headers; // Extract the username from the request headers
+  console.log("profile user " + registerusername);
+  console.log(req.headers)
+  const user = teachers.find((user) => user.username === registerusername);
+
+  if (!user) {
+    console.log("User not found when getting schedule");
+    return res.status(400).send("User not found");
+  }
+
+  const { schedule } = user;
+
+  res.status(200).json(schedule);
 });
