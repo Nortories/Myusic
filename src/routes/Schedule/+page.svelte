@@ -1,10 +1,10 @@
 <script>
   import { onMount } from "svelte";
-  import { Calendar } from "@fullcalendar/core";
   import axios from "axios";
+  import { Calendar } from "@fullcalendar/core";
   import dayGridPlugin from "@fullcalendar/daygrid";
-  import timeGridPlugin from "@fullcalendar/timegrid";
   import interactionPlugin from "@fullcalendar/interaction";
+  import timeGridPlugin from "@fullcalendar/timegrid";
 
   let calendar;
   let username = "";
@@ -13,7 +13,8 @@
   onMount(() => {
     checkLogin();
 
-    calendar = new Calendar(document.getElementById("calendar"), {
+    const calendarEl = document.getElementById("calendar");
+    calendar = new Calendar(calendarEl, {
       plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
       initialView: "timeGridWeek",
       selectable: true,
@@ -52,7 +53,7 @@
       backgroundColor: "green",
       display: "background",
     };
-    console.log("Event:",info.start.toISOString().split("T")[0]);
+    console.log("Event:",event);
     // events = [event]; // Create an array of events
     // const json = JSON.stringify(events); // Convert events to JSON string
     // const blob = new Blob([json], { type: 'application/json' }); // Create a Blob object
@@ -78,7 +79,7 @@
   }
 
   async function updatecalendar() {
-    console.log("up username:", username);
+    console.log("username:", username);
     await axios
       .get("http://localhost:3000/getSchedule", {
         headers: {

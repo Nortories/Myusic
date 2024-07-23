@@ -4,6 +4,7 @@
   import { Calendar } from "@fullcalendar/core";
   import dayGridPlugin from "@fullcalendar/daygrid";
   import interactionPlugin from "@fullcalendar/interaction";
+  import timeGridPlugin from "@fullcalendar/timegrid";
 
   let name = "";
   let username = "";
@@ -14,16 +15,26 @@
   let bio = "";
   let loginMessage = "";
   let endpoint = "http://localhost:3000/profile";
+  let events = [];
+  let calendar;
 
   onMount(async () => {
     // Retrieve username from local storage
     checkLogin();
+    // Initialize FullCalendar
+    const calendarEl = document.getElementById("calendar");
+    calendar = new Calendar(calendarEl, {
+      plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
+      initialView: "timeGridWeek",
+      selectable: true,
+      select: handleTimeSlotSelect,
+      events: [{}],
+    });
+    updatecalendar();
+    calendar.render();
 
     name = username;
     console.log(username);
-
-    if (username) {
-      try {
         const response = await axios.get(endpoint, {
           headers: {
             username: username,
@@ -36,30 +47,88 @@
         phoneNumber = data.phoneNumber;
         bio = data.bio;
 
-        // Initialize FullCalendar
-        const calendarEl = document.getElementById("calendar");
-        const calendar = new Calendar(calendarEl, {
-          plugins: [interactionPlugin, dayGridPlugin],
-          initialView: "dayGridMonth",
-          selectable: true,
-          dateClick: function (info) {
-            alert("Clicked on: " + info.dateStr);
-            // change the day's background color just for fun
-            info.dayEl.style.backgroundColor = "red";
-          },
-          events: [
-            // Add your events here
-            // Example:
-            // { title: 'Event 1', start: '2022-01-01' },
-            // { title: 'Event 2', start: '2022-01-02' },
-          ],
-        });
-        calendar.render();
-      } catch (error) {
-        console.error(error);
-      }
-    }
   });
+
+  function handleTimeSlotSelect(info) {
+    console.log("Selected!!!! time slot:", info.start, info.end);
+    const selectedSlot = calendar.getEventById("selectedSlot");
+    if (selectedSlot) {
+      selectedSlot.remove();
+    }
+    const event = {
+      id: "selectedSlot",
+      start: info.start,
+      end: info.end,
+      backgroundColor: "green",
+      display: "background",
+    };
+    console.log("Eventing:", event);
+
+    axios
+      .delete("http://localhost:3000/schedule", {
+        headers: {
+          registerUsername: username,
+          scheduleToCheck: event,
+        },
+      })
+      .then((response) => {
+        alert(" Reserved 1 slot for " + username);
+        console.log("Event deleted successfully:", response.data);
+      })
+      .catch((error) => {
+        alert( " Reserved for " + username);
+        console.error("Error deleting event:", error);
+      });
+
+      axios
+      .put("http://localhost:3000/user/schedule", {
+        registerUsername: username,
+        schedule: event,
+      })
+
+    // console.log("event 0", (events[0].start));
+    // console.log("dateClick ", (info.dateStr));
+
+    // const eventDate = new Date(info.dateStr);
+    // const eventTime = eventDate.toLocaleTimeString();
+    // console.log("Event Time:", eventTime);
+
+    // if (events.some(event => event.start === info.dateStr)) {
+    //   // Perform some action
+    //   const date = new Date(info.dateStr);
+    //   alert(formattedDate+" Reserved for " + username);
+    // }
+    // change the day's background color just for fun
+  }
+
+  async function updatecalendar() {
+    console.log("username:", username);
+    await axios
+      .get("http://localhost:3000/getSchedule", {
+        headers: {
+          registerUsername: username,
+        },
+      })
+      .then((response) => {
+        console.log("Events received:", response.data);
+        events = response.data;
+      })
+      .catch((error) => {
+        console.error("Error receiving events:", error);
+      });
+    calendar.removeAllEvents();
+
+    let i = 0;
+    for (i in events) {
+      calendar.addEvent({
+        id: events[i].id,
+        start: events[i].start,
+        end: events[i].end,
+        backgroundColor: events[i].backgroundColor,
+        display: events[i].display,
+      });
+    }
+  }
 
   function checkLogin() {
     if (localStorage.getItem("isTeacher") === "true") {
@@ -86,23 +155,23 @@
     <h1>Profile</h1>
     <div class="profile-info">
       <div class="profile-field">
-        <label>Name:</label>
+        <label for="name">Name:</label>
         <p>{name}</p>
       </div>
       <div class="profile-field">
-        <label>Email:</label>
+        <label for="email">Email:</label>
         <p>{email}</p>
       </div>
       <div class="profile-field">
-        <label>Address:</label>
+        <label for="address">Address:</label>
         <p>{address}, {zipcode}</p>
       </div>
       <div class="profile-field">
-        <label>Phone Number:</label>
+        <label for="phoneNumber">Phone Number:</label>
         <p>{phoneNumber}</p>
       </div>
       <div class="profile-field">
-        <label>Bio:</label>
+        <label for="bio">Bio:</label>
         <p>{bio}</p>
       </div>
     </div>

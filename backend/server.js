@@ -343,7 +343,7 @@ app.put("/schedule", (req, res) => {
   if (!user) {
     return res.status(400).send("User not found");
   }
-  console.log("user schedule " + user.schedule);
+  console.log("user schedule " + schedule);
   user.schedule.push(schedule); // Add the new schedule to the existing schedule array
   fs.writeFileSync(teachdbPath, JSON.stringify(teachers));
   // console.log("Scheduled update endpoint");
@@ -365,4 +365,34 @@ app.get("/getSchedule", (req, res) => {
   const { schedule } = user;
 
   res.status(200).json(schedule);
+});
+
+app.delete("/schedule", (req, res) => {
+  const { registerusername, scheduleToCheck } = req.headers; // Extract the username from the request headers
+  console.log("schedule user " + registerusername);
+  // console.log(req.headers)
+  const user = teachers.find((user) => user.username === registerusername);
+  if (!user) {
+    console.log("User not found when removing schedule");
+    return res.status(400).send("User not found");
+  }
+  const index = user.schedule.findIndex((item) => (item) === JSON.stringify(scheduleToCheck));
+  if (index !== -1) {
+    user.schedule.splice(index, 1);
+    fs.writeFileSync(teachdbPath, JSON.stringify(teachers));
+    res.status(200).send("Schedule removed successfully");
+  } else {
+    res.status(401).send("Schedule not found");
+  }
+});
+
+app.put("/user/schedule", (req, res) => {
+  const { username, schedule } = req.body;
+  const user = users.find((user) => user.username === username);
+  if (!user) {
+    return res.status(400).send("User not found");
+  }
+  user.schedule.push(schedule); // Add the new schedule to the existing schedule array
+  fs.writeFileSync(dbPath, JSON.stringify(users));
+  res.status(200).send("Schedule updated successfully");
 });
