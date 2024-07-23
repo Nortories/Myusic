@@ -9,6 +9,7 @@
   let calendar;
   let username = "";
   let events = [];
+  let isTeacher = false;
 
   onMount(() => {
     checkLogin();
@@ -28,6 +29,12 @@
   function checkLogin() {
     if (localStorage.getItem("loginstate") === "true") {
       username = localStorage.getItem("username");
+    }
+    if (localStorage.getItem("isTeacher") === "true") {
+      isTeacher = true;
+    }
+    else{
+      getUserSchedule();
     }
   }
 
@@ -53,7 +60,7 @@
       backgroundColor: "green",
       display: "background",
     };
-    console.log("Event:",event);
+    console.log("Event:", event);
     // events = [event]; // Create an array of events
     // const json = JSON.stringify(events); // Convert events to JSON string
     // const blob = new Blob([json], { type: 'application/json' }); // Create a Blob object
@@ -112,13 +119,51 @@
 
     calendar.render();
   }
+  function getUserSchedule() {
+    axios
+      .get("http://localhost:3000/user/schedule", {
+        headers: {
+          registerUsername: username,
+        },
+      })
+      .then((response) => {
+        console.log("Events received:", response.data);
+        events = response.data;
+        const userScheduleEl = document.getElementById("userSchedule");
+        userScheduleEl.innerHTML = ""; // Clear previous events
+        events.forEach((event) => {
+          const eventEl = document.createElement("div");
+          eventEl.innerHTML = `
+            <div class="event">
+              <div class="event-info">
+                <div class="event-label">Music Lesson</div>
+                <div class="event-details">
+                    <div class="event-time">Start: ${new Date(event.start).toLocaleString()}</div>
+                </div>
+              </div>
+              <div class="event-review">
+                <textarea class="review-input" placeholder="Leave a review"></textarea>
+                <button class="review-submit">Submit</button>
+              </div>
+            </div>
+          `;
+          userScheduleEl.appendChild(eventEl);
+        });
+      })
+
+      .catch((error) => {
+        console.error("Error receiving events:", error);
+      });
+  }
 </script>
 
-<div id="calendar"></div>
+  <div id="calendar"></div>
+  <div id="userSchedule"></div>
 
 <style>
   #calendar {
     width: 100%;
     height: 600px;
   }
+  
 </style>

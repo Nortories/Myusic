@@ -387,12 +387,27 @@ app.delete("/schedule", (req, res) => {
 });
 
 app.put("/user/schedule", (req, res) => {
-  const { username, schedule } = req.body;
-  const user = users.find((user) => user.username === username);
+  const { registerUsername, schedule } = req.body;
+  const user = users.find((user) => user.username === registerUsername);
   if (!user) {
-    return res.status(400).send("User not found");
+    return res.status(400).send("User not found when updating schedule");
   }
   user.schedule.push(schedule); // Add the new schedule to the existing schedule array
   fs.writeFileSync(dbPath, JSON.stringify(users));
   res.status(200).send("Schedule updated successfully");
+});
+
+app.get("/user/schedule", (req, res) => {
+  const { registerusername } = req.headers; // Extract the username from the request headers
+  console.log("profile user " + registerusername);
+  const user = users.find((user) => user.username === registerusername);
+
+  if (!user) {
+    console.log("User not found when getting schedule");
+    return res.status(400).send("User not found");
+  }
+
+  const { schedule } = user;
+
+  res.status(200).json(schedule);
 });
